@@ -1,6 +1,8 @@
 package fi.tuni.weatherapp.view
 
 import android.content.SharedPreferences
+import android.icu.text.DecimalFormat
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +12,7 @@ import com.bumptech.glide.Glide
 import fi.tuni.weatherapp.R
 import fi.tuni.weatherapp.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var GET: SharedPreferences
     private lateinit var SET: SharedPreferences.Editor
+    private var simpleDateFormat =  SimpleDateFormat(" k:mm", Locale.ENGLISH)
+
+    val df = DecimalFormat("#")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         getLiveData()
 
         swipe_refresh_layout.setOnRefreshListener {
-            ll_data_view.visibility = View.GONE
+            mainContent.visibility = View.GONE
             tv_error.visibility = View.GONE
             pb_loading.visibility = View.GONE
 
@@ -58,29 +63,33 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun getLiveData() {
 
         viewmodel.weather_data.observe(this, Observer { data ->
             data?.let {
-                ll_data_view.visibility = View.VISIBLE
+                mainContent.visibility = View.VISIBLE
                 pb_loading.visibility = View.GONE
 
-                tv_country_code.text = data.sys.country
-                tv_city_name.text = data.name
+                country.text = data.sys.country
+                city.text = data.name
 
-                tv_degrees.text = data.main.temp.toString() + "°C"
+                temp.text = df.format(data.main.temp).toString() +"°C"
 
-                humidity.text = ":"+ data.main.humidity.toString()
-                wind.text = ":"+ data.wind.speed.toString() + "%"
-                tv_lat.text = ":"+  data.coord.lat.toString()
-                tv_lon.text = ":"+  data.coord.lon.toString()
+               info_weather.text =  data.weather[0].main
 
+
+                sunset.text  = simpleDateFormat.format( data.sys.sunset*1000).toString()
+                sunrise.text = simpleDateFormat.format( data.sys.sunrise*1000).toString()
+
+
+                humidity.text =  data.main.humidity.toString() +"%"
+                wind.text =  data.wind.speed.toString() +"m/s"
+                pressure.text = data.main.pressure.toString() + "hPa"
 
                 Glide.with(this)
                     .load("http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png")
                     .into(img_weather_icon)
-
-
 
             }
         })
@@ -89,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 if (error) {
                     tv_error.visibility = View.VISIBLE
                     pb_loading.visibility = View.GONE
-                    ll_data_view.visibility = View.GONE
+                    mainContent.visibility = View.GONE
                 } else {
                     tv_error.visibility = View.GONE
                 }
@@ -101,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 if (loading) {
                     pb_loading.visibility = View.VISIBLE
                     tv_error.visibility = View.GONE
-                    ll_data_view.visibility = View.GONE
+                    mainContent.visibility = View.GONE
                 } else {
                     pb_loading.visibility = View.GONE
                 }
@@ -109,4 +118,6 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
+
 }
+

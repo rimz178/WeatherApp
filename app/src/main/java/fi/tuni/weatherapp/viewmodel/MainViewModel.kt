@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class MainViewModel :  ViewModel (){
+class MainViewModel : ViewModel (){
 
 
     private val  weatherApiService = weatherApiService()
@@ -19,14 +19,13 @@ class MainViewModel :  ViewModel (){
     val weather_error = MutableLiveData<Boolean>()
     val weather_load = MutableLiveData<Boolean>()
 
+
     fun refreshData(cityName: String) {
         getDataFromAPI(cityName)
-        //getDataFromLocal()
+
     }
 
     private fun getDataFromAPI(cityName : String) {
-
-
         weather_load.value = true
         disposable.add(
             weatherApiService.getDataService(cityName )

@@ -12,8 +12,9 @@ data class Main(
     val pressure: Int,
     @SerializedName("temp")
     val temp: Double,
-    @SerializedName("temp_max")
-    val tempMax: Double,
     @SerializedName("temp_min")
-    val tempMin: Double
+    val tempMin: Double,
+    @SerializedName("temp_max")
+    val tempMax: Double
+
 )
