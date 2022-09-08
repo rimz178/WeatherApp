@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#122259</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">#050505</item>
     </style>
 
     <style name="Theme.WeatherApp.NoActionBar">

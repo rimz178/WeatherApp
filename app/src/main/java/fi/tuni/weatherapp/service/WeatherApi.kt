@@ -14,3 +14,4 @@ interface WeatherApi {
         @Query(value = "q") cityName : String
     ): Single<WeatherModel>
 }
+

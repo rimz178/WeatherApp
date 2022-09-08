@@ -1,5 +1,6 @@
 package fi.tuni.weatherapp.view
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
@@ -23,12 +24,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var SET: SharedPreferences.Editor
     private var simpleDateFormat =  SimpleDateFormat(" k:mm", Locale.ENGLISH)
 
-    val df = DecimalFormat("#")
+    private val df = DecimalFormat("#")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         GET = getSharedPreferences(packageName, MODE_PRIVATE)
         SET = GET.edit()
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun getLiveData() {
 
         viewmodel.weather_data.observe(this, Observer { data ->
@@ -75,15 +78,14 @@ class MainActivity : AppCompatActivity() {
                 city.text = data.name
 
                 temp.text = df.format(data.main.temp).toString() +"°C"
-
-               info_weather.text =  data.weather[0].main
-
+                info_weather.text =  data.weather[0].main
 
                 sunset.text  = simpleDateFormat.format( data.sys.sunset*1000).toString()
                 sunrise.text = simpleDateFormat.format( data.sys.sunrise*1000).toString()
 
-
+                feels_like.text = df.format(data.main.feelsLike).toString() + " °C"
                 humidity.text =  data.main.humidity.toString() +"%"
+
                 wind.text =  data.wind.speed.toString() +"m/s"
                 pressure.text = data.main.pressure.toString() + "hPa"
 
@@ -98,9 +100,10 @@ class MainActivity : AppCompatActivity() {
                 if (error) {
                     tv_error.visibility = View.VISIBLE
                     pb_loading.visibility = View.GONE
-                    mainContent.visibility = View.GONE
+                    mainContent.visibility = View.VISIBLE
                 } else {
                     tv_error.visibility = View.GONE
+
                 }
             }
         })
