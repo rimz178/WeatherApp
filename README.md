@@ -4,7 +4,7 @@
 @rimz178/ Riku Mikkonen
 
 # Topic
- Sää mobiilisovellus, joka näyttää käyttäjän valitseman haetun paikan sään.
+ Sää mobiilisovellus, joka näyttää käyttäjän haetun paikan sään.
  
  # Screenshots
  
