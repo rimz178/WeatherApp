@@ -9,6 +9,7 @@
     android:id="@+id/swipe_refresh_layout"
     android:background="@drawable/gradient_bg"
     tools:context=".view.MainActivity">
+
     <RelativeLayout
         android:id="@+id/mainContent"
         android:layout_width="match_parent"
@@ -17,9 +18,15 @@
 
         <TextView
             android:id="@+id/tv_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Error, try again"
+            android:layout_width="match_parent"
+            android:layout_height="224dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:keepScreenOn="false"
+            android:rotationX="4"
+            android:text="@string/error_try_again"
+            android:textColor="@color/error_try_again"
+            android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +42,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,18 +60,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
 
                 <EditText
                     android:id="@+id/edt_city_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:hint="@string/city_name"
                     android:inputType="text"
-                    android:padding="5dp"
                     android:lines="1"
-                    android:hint="City name" />
+                    android:minHeight="48dp"
+                    android:padding="5dp"
+                    android:textColorHint="#616161" />
 
                 <ImageView
                     android:id="@+id/img_search_city"
@@ -83,20 +94,20 @@
             android:orientation="vertical">
 
 
-
             <ImageView
                 android:id="@+id/img_weather_icon"
                 android:layout_width="89dp"
                 android:layout_height="85dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:src="@drawable/ic_launcher_foreground"
+                tools:ignore="ImageContrastCheck" />
+
             <TextView
                 android:id="@+id/info_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="hello"/>
-
+                android:text="@string/info_weather" />
 
 
             <TextView
@@ -105,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-thin"
-                android:text="24°C"
+                android:text="@string/_24_c"
                 android:textSize="80sp">
 
             </TextView>
@@ -120,8 +131,8 @@
                     android:id="@+id/city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="city name"/>
+                    android:text="@string/city_name"
+                    android:textSize="20sp" />
 
                 <Space
                     android:layout_width="50dp"
@@ -133,108 +144,123 @@
                     android:id="@+id/country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="Country" />
+                    android:text="@string/country"
+                    android:textSize="20sp" />
             </LinearLayout>
+
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/detailsContainer"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:src="@drawable/temperature"
-                        app:tint="#FFF">
+                        app:tint="#FFF"
+                        android:contentDescription="@string/feels_like_des">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
 
-                        android:textSize="12sp"
-                        android:text="Feels like"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/feels_like"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/feels_like"
-                        android:textSize="14sp"
-                        android:text="5:30"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_30"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
+                        android:contentDescription="TODO"
                         android:src="@drawable/sunrise"
                         app:tint="#FFF">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
-                        android:textSize="12sp"
-                        android:text="Sunrise"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/sunrise"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/sunrise"
-                        android:textSize="14sp"
-                        android:text="5:30"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_30"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
@@ -242,47 +268,53 @@
                         app:tint="#FFF">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
-                        android:textSize="12sp"
-                        android:text="Sunset"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/sunset"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/sunset"
-                        android:textSize="14sp"
-                        android:text="5:30"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_30"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
+
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"></Space>
+                android:layout_height="10dp" />
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
@@ -290,77 +322,85 @@
                         app:tint="#FFF">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
-                        android:textSize="12sp"
-                        android:text="Wind"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/wind"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/wind"
-                        android:textSize="14sp"
-                        android:text="5:30am"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/_5_30am"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
+                        android:contentDescription="@string/todo"
                         android:src="@drawable/pressure"
                         app:tint="#FFF">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
-                        android:textSize="12sp"
-                        android:text="Pressure"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/pressure"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/pressure"
-                        android:textSize="14sp"
-                        android:text="5:30"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/hpa"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:background="#3CF1EBF1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#3CF1EBF1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <ImageView
                         android:layout_width="25dp"
@@ -369,30 +409,32 @@
                         app:tint="#FFF">
 
                     </ImageView>
+
                     <Space
                         android:layout_width="wrap_content"
-                        android:layout_height="5dp">
-                    </Space>
+                        android:layout_height="5dp" />
+
                     <TextView
-                        android:textSize="12sp"
-                        android:text="Humidity"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="@string/humidity"
+                        android:textSize="12sp">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/humidity"
-                        android:textSize="14sp"
-                        android:text="12"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:text="@string/_12"
+                        android:textSize="14sp" />
 
 
                 </LinearLayout>
-                <Space android:layout_width="10dp"
-                    android:layout_height="wrap_content">
-                </Space>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
 
@@ -400,4 +442,3 @@
 
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-

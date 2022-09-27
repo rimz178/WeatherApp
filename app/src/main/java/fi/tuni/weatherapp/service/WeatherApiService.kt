@@ -6,10 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class weatherApiService {
-  
 
 
+class WeatherApiService {
     private val  BASE_URL ="https://api.openweathermap.org/"
 
     private val api = Retrofit.Builder()
@@ -22,6 +21,9 @@ class weatherApiService {
     fun getDataService(cityName :String): Single<WeatherModel> {
         return api.getData(cityName)
 
+    }
+    fun getCity(lat: Double ,lon : Double  ) : Single<WeatherModel> {
+        return  api.getWeatherData(lat,lon)
     }
 
 }

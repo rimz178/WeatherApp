@@ -3,7 +3,7 @@ package fi.tuni.weatherapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import fi.tuni.weatherapp.model.WeatherModel
-import fi.tuni.weatherapp.service.weatherApiService
+import fi.tuni.weatherapp.service.WeatherApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel : ViewModel (){
 
 
-    private val  weatherApiService = weatherApiService()
+    private val  weatherApiService = WeatherApiService()
     private val  disposable = CompositeDisposable()
 
     val weather_data = MutableLiveData<WeatherModel>()

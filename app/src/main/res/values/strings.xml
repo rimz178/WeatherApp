@@ -9,4 +9,21 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="error_try_again">Error, try again</string>
+    <string name="city_name">City name</string>
+    <string name="info_weather">Info Weather</string>
+    <string name="_24_c">24°C</string>
+    <string name="country">Country</string>
+    <string name="feels_like">Feels like</string>
+    <string name="_5_30">5:30</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind">Wind</string>
+    <string name="_5_30am">5:30am</string>
+    <string name="todo">TODO</string>
+    <string name="pressure">Pressure</string>
+    <string name="hpa">hpa</string>
+    <string name="humidity">Humidity</string>
+    <string name="_12">12</string>
+    <string name="feels_like_des">Feels like</string>
 </resources>
