@@ -22,8 +22,8 @@ class WeatherApiService {
         return api.getData(cityName)
 
     }
-    fun getCity(lat: Double ,lon : Double  ) : Single<WeatherModel> {
+  /*  fun getCity(lat: Double ,lon : Double  ) : Single<WeatherModel> {
         return  api.getWeatherData(lat,lon)
-    }
+    }*/
 
 }
