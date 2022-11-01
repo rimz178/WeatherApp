@@ -2,6 +2,7 @@ package fi.tuni.weatherapp.service
 
 import fi.tuni.weatherapp.model.WeatherModel
 import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,17 +12,19 @@ import retrofit2.http.Query
 
 interface WeatherApi {
 
-    @GET("data/2.5/weather?units=metric&appid=1824f0b34ad8109e42bc1e6e5fb99606")
+    @GET("weather")
+    fun getCurrentWeatherData(
+        @Query("lat") latitude: String,
+        @Query("lon") longitude: String,
+         @Query("APPID") api_key: String
 
+    ): Call<WeatherModel>
 
-    fun getData(
-        @Query("q") cityName : String
-    ): Single<WeatherModel>
+    @GET("weather")
+    fun getCityWeatherData(
+        @Query("q") cityName: String,
+        @Query("APPID") api_key: String,
+    ):Call<WeatherModel>
 
- /*   fun getWeatherData(
-        @Query(value = "longitude") lon : Double,
-        @Query(value = "latitude") lat: Double
-
-    ): Single<WeatherModel>*/
 }
 

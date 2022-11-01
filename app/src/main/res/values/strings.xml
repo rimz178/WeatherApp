@@ -26,4 +26,5 @@
     <string name="humidity">Humidity</string>
     <string name="_12">12</string>
     <string name="feels_like_des">Feels like</string>
+    <string name="search_locations">search_locations</string>
 </resources>

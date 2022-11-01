@@ -8,22 +8,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 
-class WeatherApiService {
-    private val  BASE_URL ="https://api.openweathermap.org/"
+object WeatherApiService {
 
-    private val api = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-        .create(WeatherApi::class.java)
 
-    fun getDataService(cityName :String): Single<WeatherModel> {
-        return api.getData(cityName)
-
+    private var retrofit:Retrofit?=null
+    private var BASE_URL="https://api.openweathermap.org/data/2.5/"
+    fun getWeatherApi():WeatherApi? {
+        if(retrofit==null) {
+            retrofit=Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        }
+        return retrofit!!.create(WeatherApi::class.java)
     }
-  /*  fun getCity(lat: Double ,lon : Double  ) : Single<WeatherModel> {
-        return  api.getWeatherData(lat,lon)
-    }*/
 
 }

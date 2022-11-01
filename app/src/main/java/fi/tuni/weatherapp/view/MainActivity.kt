@@ -2,7 +2,6 @@ package fi.tuni.weatherapp.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -16,77 +15,104 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.view.View.VISIBLE
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.Switch
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import fi.tuni.weatherapp.BuildConfig
+import fi.tuni.weatherapp.BuildConfig.API_KEY
 import fi.tuni.weatherapp.R
-import fi.tuni.weatherapp.viewmodel.MainViewModel
+import fi.tuni.weatherapp.databinding.ActivityMainBinding
+import fi.tuni.weatherapp.model.WeatherModel
+import fi.tuni.weatherapp.service.WeatherApiService
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.Error
+import java.math.RoundingMode
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
-import android.text.Editable as Editable1
 
 
 class MainActivity : AppCompatActivity() {
 
 
     private  lateinit var  fused : FusedLocationProviderClient
-
-    private lateinit var viewmodel: MainViewModel
-    private lateinit var GET: SharedPreferences
-    private lateinit var SET: SharedPreferences.Editor
-    private val df = DecimalFormat("#")
+    private lateinit var activityMainBinding: ActivityMainBinding
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GET = getSharedPreferences(packageName, MODE_PRIVATE)
-        SET = GET.edit()
-        viewmodel = ViewModelProviders.of(this)[MainViewModel::class.java]
 
-        var cName = GET.getString("cityName","")?.toLowerCase()
-        edt_city_name.setText(cName)
-        viewmodel.refreshData(cName!!)
 
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        supportActionBar?.hide()
         fused = LocationServices.getFusedLocationProviderClient(this)
-2
+        activityMainBinding.mainContent.visibility = View.GONE
+
+        getLocation()
 
 
-        getLiveData()
-        getCurrentLocation()
+        activityMainBinding.edtCityName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                getCity(activityMainBinding.edtCityName.text.toString())
+                val view = this.currentFocus
 
-        swipe_refresh_layout.setOnRefreshListener {
-            mainContent.visibility = View.GONE
-            tv_error.visibility = View.GONE
-            pb_loading.visibility = View.GONE
+                if (view != null ) {
+                    val ss: InputMethodManager =
+                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    ss.hideSoftInputFromWindow(view.windowToken, 0)
+                    activityMainBinding.edtCityName.clearFocus()
+                }
+                true
 
-            val cityName = GET.getString("cityName", cName)?.toLowerCase()
-            edt_city_name.setText(cityName)
-            viewmodel.refreshData(cityName!!)
-            swipe_refresh_layout.isRefreshing = false
-        }
-
-        img_search_city.setOnClickListener {
-            val cityName = edt_city_name.text.toString()
-            SET.putString("cityName", cityName)
-            SET.apply()
-            viewmodel.refreshData(cityName)
-            getLiveData()
-
+            } else false
         }
 
     }
 
+    private fun getCity(cityName: String) {
+
+
+        activityMainBinding.pbLoading.visibility= VISIBLE
+        //
+        WeatherApiService.getWeatherApi()!!.getCityWeatherData(cityName, API_KEY).enqueue(object: Callback<WeatherModel>{
+
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(call: Call<WeatherModel>, response: Response<WeatherModel>) {
+                if(response.isSuccessful) {
+                    gettData(response.body())
+                }
+
+                else {
+                    Toast.makeText(applicationContext, "wrong city name ", Toast.LENGTH_SHORT).show()
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
+                Toast.makeText(applicationContext, "on Failure", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
 
     @SuppressLint("MissingPermission","SetTextI18n")
-    private  fun getCurrentLocation() {
+    private  fun getLocation() {
 
         if(checkPermission())
         {
@@ -115,8 +141,12 @@ class MainActivity : AppCompatActivity() {
                         else
                         {
                             Toast.makeText(this, "Get success", Toast.LENGTH_SHORT).show()
-                            city.text =  getCityName(location.latitude,location.longitude)
-                            country.text =  getCountryName(location.latitude,location.longitude)
+                            fetchCurrentLocationWeather(
+                                location.latitude.toString(),
+                                location.longitude.toString()
+
+                            )
+
 
 
                         }
@@ -136,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isLocationEnabled() :Boolean{
-        val locationManager: LocationManager=getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager: LocationManager=getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
@@ -145,17 +175,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
-            this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION),
-            PERMISSION_REQUEST_ACCESS_LOCATION,
+            this, arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
 
+            PERMISSION_REQUEST_ACCESS_LOCATION
         )
+
+
     }
-
-
     companion object {
-        private const val PERMISSION_REQUEST_ACCESS_LOCATION = 150
-
+        private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
+      //  const val API_KEY =
     }
     private fun checkPermission() : Boolean {
 
@@ -181,89 +213,65 @@ class MainActivity : AppCompatActivity() {
             if(grantResults.isNotEmpty()&& grantResults[0]== PackageManager.PERMISSION_GRANTED)
             {
                 Toast.makeText(applicationContext,"granted", Toast.LENGTH_SHORT).show()
-                getCurrentLocation()
-
-
+                getLocation()
             }
             else
             {
                 Toast.makeText(applicationContext,"denied", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
-    private fun getCityName(lat: Double, long: Double): String {
-        var cityname = ""
-        var geoCoder = Geocoder(this, Locale.getDefault())
-        var adress = geoCoder.getFromLocation(lat,long,3)
 
-        cityname = adress[0].locality
-       Log.d("Debug:", "Your City: $cityname")
-        return cityname
-    }
-    private fun getCountryName(lat: Double,long: Double):String{
-         var countryName = ""
-        var geoCoder = Geocoder(this, Locale.getDefault())
-        var adress = geoCoder.getFromLocation(lat,long,3)
-        countryName = adress[0].countryName
-        return countryName
-    }
+    private fun fetchCurrentLocationWeather(latitude: String, longitude: String) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
+        activityMainBinding.pbLoading.visibility = VISIBLE
+
+        WeatherApiService.getWeatherApi()?.getCurrentWeatherData(latitude, longitude, API_KEY  )//API_KEY
+            ?.enqueue(object :
+                Callback<WeatherModel> {
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun onResponse(call: Call<WeatherModel>, response: Response<WeatherModel>) {
+
+                    if (response.isSuccessful) {
+
+                        gettData(response.body())
+                    }
+                }
+
+                override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
+                    Toast.makeText(applicationContext, "Error!", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+    }
     @SuppressLint("SetTextI18n")
-    private fun getLiveData() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun gettData(body: WeatherModel?) {
+        activityMainBinding.mainContent.visibility = VISIBLE
+        activityMainBinding.pbLoading.visibility = View.GONE
 
-        viewmodel.weather_data.observe(this) { data ->
-            data?.let {
-                mainContent.visibility = View.VISIBLE
-                pb_loading.visibility = View.GONE
-
-                country.text = data.sys.country
-                city.text = data.name
-
-                temp.text = df.format(data.main.temp).toString() + "°C"
-                info_weather.text = data.weather[0].description
-                sunrise.text = getTime(data.sys.sunrise.toLong())
-                sunset.text = getTime(data.sys.sunset.toLong())
-
-                feels_like.text = df.format(data.main.feelsLike).toString() + " °C"
-                humidity.text = data.main.humidity.toString() + "%"
-
-                wind.text = data.wind.speed.toString() + "m/s"
-                pressure.text = data.main.pressure.toString() + "hPa"
+        activityMainBinding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
+        activityMainBinding.city.text = body.name
+        activityMainBinding.country.text = body.sys.country
+        activityMainBinding.feelsLike.text = kelvinToCelsius(body.main.feelsLike).toString() +"°C"
+        activityMainBinding.infoWeather.text = body.weather[0].description
+        activityMainBinding.sunrise.text = getTime(body.sys.sunrise.toLong())
+        activityMainBinding.sunset.text = getTime(body.sys.sunset.toLong())
+        activityMainBinding.pressure.text = body.main.pressure.toString()
+        activityMainBinding.wind.text = body.wind.speed.toString() + " m/s"
+        activityMainBinding.edtCityName.setText(body.name)
 
 
+        Glide.with(this)
+            .load("http://openweathermap.org/img/wn/" + body.weather[0].icon + "@2x.png")
+            .into(img_weather_icon)
+    }
 
-                Glide.with(this)
-                    .load("http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png")
-                    .into(img_weather_icon)
-
-            }
-        }
-        viewmodel.weather_error.observe(this) { error ->
-            error?.let {
-                if (it) {
-                    tv_error.visibility = View.VISIBLE
-                    pb_loading.visibility = View.GONE
-                    mainContent.visibility = View.VISIBLE
-                } else {
-                    tv_error.visibility = View.GONE
-
-                }
-            }
-        }
-        viewmodel.weather_load.observe(this) { loading ->
-            loading?.let {
-                if (it) {
-                    pb_loading.visibility = View.VISIBLE
-                    tv_error.visibility = View.GONE
-                    mainContent.visibility = View.GONE
-                } else {
-                    pb_loading.visibility = View.GONE
-                }
-            }
-        }
 
     }
+
 
    private fun getTime(timestamp1 : Long): String? {
         val times= SimpleDateFormat("k:mm", Locale.ENGLISH)
@@ -271,7 +279,12 @@ class MainActivity : AppCompatActivity() {
         return times.format(date)
     }
 
-
-
+    private fun kelvinToCelsius(temp: Double): Int {
+        var intTemp = temp
+        intTemp = intTemp.minus(273)
+        return intTemp.toBigDecimal().setScale(0, RoundingMode.UP).toInt()
 }
+
+
+
 
