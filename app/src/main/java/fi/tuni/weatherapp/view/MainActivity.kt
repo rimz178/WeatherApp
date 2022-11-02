@@ -48,33 +48,31 @@ class MainActivity : AppCompatActivity() {
 
 
     private  lateinit var  fused : FusedLocationProviderClient
-    private lateinit var activityMainBinding: ActivityMainBinding
-
-
+    private lateinit var  binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         supportActionBar?.hide()
         fused = LocationServices.getFusedLocationProviderClient(this)
-        activityMainBinding.mainContent.visibility = View.GONE
+        binding.mainContent.visibility = View.GONE
 
         getLocation()
 
+        // takes the city the user is looking for and converts it to a string
+        binding.edtCityName.setOnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_SEARCH) {
+                getCity(binding.edtCityName.text.toString())
+                val views = this.currentFocus
 
-        activityMainBinding.edtCityName.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                getCity(activityMainBinding.edtCityName.text.toString())
-                val view = this.currentFocus
-
-                if (view != null ) {
+                if (views != null ) {
                     val ss: InputMethodManager =
                         getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    ss.hideSoftInputFromWindow(view.windowToken, 0)
-                    activityMainBinding.edtCityName.clearFocus()
+                    ss.hideSoftInputFromWindow(views.windowToken, 0)
+                    binding.edtCityName.clearFocus()
                 }
                 true
 
@@ -82,12 +80,10 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+    //Takes the city name given by the user and checks if the city is correct
     private fun getCity(cityName: String) {
+        binding.pbLoading.visibility= VISIBLE
 
-
-        activityMainBinding.pbLoading.visibility= VISIBLE
-        //
         WeatherApiService.getWeatherApi()!!.getCityWeatherData(cityName, API_KEY).enqueue(object: Callback<WeatherModel>{
 
             @RequiresApi(Build.VERSION_CODES.O)
@@ -97,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 else {
-                    Toast.makeText(applicationContext, "wrong city name ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, " city not found ", Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -110,7 +106,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
+   /*Check if the app has permission to use the device's location,
+       if the location is not turned on, the device asks for permission to use the location */
     @SuppressLint("MissingPermission","SetTextI18n")
     private  fun getLocation() {
 
@@ -128,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            if(isLocationEnabled())
+            if(isLocationOn())
             {
                     fused.lastLocation.addOnCompleteListener(this) {task ->
                         val location: Location? =task.result
@@ -165,14 +162,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isLocationEnabled() :Boolean{
+    private fun isLocationOn() :Boolean{
         val locationManager: LocationManager=getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )
     }
 
-
+    //asks for permission to use location when the app starts
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
             this, arrayOf(
@@ -187,8 +184,11 @@ class MainActivity : AppCompatActivity() {
     }
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
-      //  const val API_KEY =
+
     }
+
+
+    //Checks whether the user has given permission to use the device's location
     private fun checkPermission() : Boolean {
 
         if(ActivityCompat.checkSelfPermission(this,
@@ -222,10 +222,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    //Gets the location data (lat/lon) received from the device and reads the weather data using WeatherApiService and Weatherapi
     private fun fetchCurrentLocationWeather(latitude: String, longitude: String) {
 
-        activityMainBinding.pbLoading.visibility = VISIBLE
+        binding.pbLoading.visibility = VISIBLE
 
         WeatherApiService.getWeatherApi()?.getCurrentWeatherData(latitude, longitude, API_KEY  )//API_KEY
             ?.enqueue(object :
@@ -249,19 +249,19 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun gettData(body: WeatherModel?) {
-        activityMainBinding.mainContent.visibility = VISIBLE
-        activityMainBinding.pbLoading.visibility = View.GONE
+        binding.mainContent.visibility = VISIBLE
+        binding.pbLoading.visibility = View.GONE
 
-        activityMainBinding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
-        activityMainBinding.city.text = body.name
-        activityMainBinding.country.text = body.sys.country
-        activityMainBinding.feelsLike.text = kelvinToCelsius(body.main.feelsLike).toString() +"°C"
-        activityMainBinding.infoWeather.text = body.weather[0].description
-        activityMainBinding.sunrise.text = getTime(body.sys.sunrise.toLong())
-        activityMainBinding.sunset.text = getTime(body.sys.sunset.toLong())
-        activityMainBinding.pressure.text = body.main.pressure.toString()
-        activityMainBinding.wind.text = body.wind.speed.toString() + " m/s"
-        activityMainBinding.edtCityName.setText(body.name)
+        binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
+        binding.city.text = body.name
+        binding.country.text = body.sys.country
+        binding.feelsLike.text = kelvinToCelsius(body.main.feelsLike).toString() +"°C"
+        binding.infoWeather.text = body.weather[0].description
+        binding.sunrise.text = getTime(body.sys.sunrise.toLong())
+        binding.sunset.text = getTime(body.sys.sunset.toLong())
+        binding.pressure.text = body.main.pressure.toString()
+        binding.wind.text = body.wind.speed.toString() + " m/s"
+        binding.edtCityName.setText(body.name)
 
 
         Glide.with(this)

@@ -54,7 +54,7 @@
                         android:id="@+id/edt_city_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="@string/search_locations"
+                        android:hint="search locations"
                         android:drawableStart="@drawable/ic_baseline_search_24"
                         android:drawablePadding="@dimen/padding_large"
                         android:imeOptions="actionSearch"
