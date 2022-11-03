@@ -8,14 +8,15 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/mainContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/sunny12"
         android:padding="16dp"
-        android:background="@drawable/gradient_bg"
         tools:context=".view.MainActivity">
 
         <RelativeLayout
-            android:id="@+id/mainContent"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
@@ -54,17 +55,14 @@
                         android:id="@+id/edt_city_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="search locations"
                         android:drawableStart="@drawable/ic_baseline_search_24"
-                        android:drawablePadding="@dimen/padding_large"
                         android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
                         android:inputType="text"
                         android:lines="1"
                         android:minHeight="48dp"
                         android:padding="5dp"
-                        android:importantForAutofill="no"
-                        />
-
+                        android:textColor="#FFFFFF" />
 
 
                 </LinearLayout>
@@ -160,9 +158,9 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:contentDescription="@string/feels_like_des"
                             android:src="@drawable/temperature"
-                            app:tint="#FFF"
-                            android:contentDescription="@string/feels_like_des">
+                            app:tint="#FFF">
 
                         </ImageView>
 

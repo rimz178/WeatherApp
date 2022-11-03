@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.drawable.AnimationDrawable
 import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
 import android.location.Geocoder
@@ -16,6 +17,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.View.VISIBLE
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Switch
@@ -23,6 +25,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -50,9 +54,11 @@ class MainActivity : AppCompatActivity() {
     private  lateinit var  fused : FusedLocationProviderClient
     private lateinit var  binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -60,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         fused = LocationServices.getFusedLocationProviderClient(this)
         binding.mainContent.visibility = View.GONE
 
+
+   
         getLocation()
 
         // takes the city the user is looking for and converts it to a string
@@ -246,6 +254,9 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun gettData(body: WeatherModel?) {
