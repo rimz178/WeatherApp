@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainContent.visibility = View.GONE
 
 
-   
+
         getLocation()
 
         // takes the city the user is looking for and converts it to a string
@@ -113,6 +114,7 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
 
    /*Check if the app has permission to use the device's location,
        if the location is not turned on, the device asks for permission to use the location */
@@ -253,16 +255,79 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-    }
+    } //change the background according to the weather
+     private fun update (id : Int)  {
+        when(id) {
+            //thunderstorm
+            in 200..232-> {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.thunderstorm_2
+                )
 
+            }
+
+            //rain
+            in 300..531 ->{
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.raindrop
+                )
+
+            } // snow
+            in 600..622 ->{
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.snows
+                )
+
+            }//mist
+           in 700..781 ->{
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.mists
+                )
+
+            }
+            //clear
+             800 ->{
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.clears
+                )
+
+            }
+            //clouds
+            in 801..804 ->{
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.clodss
+                )
+
+            }
+        }
+         binding.mainContent.visibility = VISIBLE
+         binding.pbLoading.visibility = View.GONE
+       }
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun gettData(body: WeatherModel?) {
-        binding.mainContent.visibility = VISIBLE
+    /*    binding.mainContent.visibility = VISIBLE
         binding.pbLoading.visibility = View.GONE
-
+*/
         binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
         binding.city.text = body.name
         binding.country.text = body.sys.country
@@ -274,7 +339,7 @@ class MainActivity : AppCompatActivity() {
         binding.wind.text = body.wind.speed.toString() + " m/s"
         binding.edtCityName.setText(body.name)
 
-
+        update(body.weather[0].id)
         Glide.with(this)
             .load("http://openweathermap.org/img/wn/" + body.weather[0].icon + "@2x.png")
             .into(img_weather_icon)
@@ -284,7 +349,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-   private fun getTime(timestamp1 : Long): String? {
+
+
+private fun getTime(timestamp1 : Long): String? {
         val times= SimpleDateFormat("k:mm", Locale.ENGLISH)
         val date = Date( timestamp1* 1000)
         return times.format(date)
