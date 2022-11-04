@@ -333,9 +333,10 @@ class MainActivity : AppCompatActivity() {
         binding.infoWeather.text = body.weather[0].description
         binding.sunrise.text = getTime(body.sys.sunrise.toLong())
         binding.sunset.text = getTime(body.sys.sunset.toLong())
-        binding.pressure.text = body.main.pressure.toString()
+        binding.pressure.text = body.main.pressure.toString() + " hPa"
         binding.wind.text = body.wind.speed.toString() + " m/s"
         binding.edtCityName.setText(body.name)
+        binding.humidity.text = body.main.humidity.toString() + " %"
 
         update(body.weather[0].id)
         Glide.with(this)
