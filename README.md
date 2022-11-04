@@ -4,11 +4,11 @@
 @rimz178/ Riku Mikkonen
 
 # Topic
- Sää mobiilisovellus, joka näyttää käyttäjän haetun paikan sään.
+ Sovellus kysyy käyttäjältä ensimmäisellä kerralla käyttäjän sijaintia ja näyttää kyseisen paikan sään. 
+ Sovellus myös muuttaa taustakuvaa sään mukaan. 
  
  # Screenshots
- 
-![sää2](https://user-images.githubusercontent.com/62377839/191924081-e80cda19-2173-42e7-9e26-ab9c09d6890f.png)
+![mobiili](https://user-images.githubusercontent.com/62377839/199967829-17cfd7a4-fc7f-47a3-ac91-ab075e6a6034.png)
 
  
  # Restful api
