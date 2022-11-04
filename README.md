@@ -9,7 +9,8 @@
  
  # Screenshots
 
-![sääsovellus](https://user-images.githubusercontent.com/62377839/199987702-f8e06cb2-6246-4652-bb38-ef3a65268b1f.png)
+
+![sääss](https://user-images.githubusercontent.com/62377839/199988228-66e42810-a881-4be3-9aa0-fe5c3d702130.png)
 
  
  # Restful api
