@@ -3,8 +3,6 @@
 # Authors
 @rimz178/ Riku Mikkonen
 
-# Title
-  Weather app
 # Topic
  Sovellus kysyy käyttäjältä ensimmäisellä kerralla käyttäjän sijaintia ja näyttää kyseisen paikan sään. 
  Sovellus myös muuttaa taustakuvaa sään mukaan. 
