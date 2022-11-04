@@ -8,7 +8,8 @@
  Sovellus myös muuttaa taustakuvaa sään mukaan. 
  
  # Screenshots
-![mobiili](https://user-images.githubusercontent.com/62377839/199967829-17cfd7a4-fc7f-47a3-ac91-ab075e6a6034.png)
+
+![sääsovellus](https://user-images.githubusercontent.com/62377839/199987702-f8e06cb2-6246-4652-bb38-ef3a65268b1f.png)
 
  
  # Restful api
