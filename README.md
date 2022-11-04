@@ -10,7 +10,7 @@
  Sovellus myös muuttaa taustakuvaa sään mukaan. 
  
  # Screenshots
-![mobiili](https://user-images.githubusercontent.com/62377839/199966935-da93be50-7d6b-47af-8976-3a49ef2ac856.png)
+![mobiili](https://user-images.githubusercontent.com/62377839/199967829-17cfd7a4-fc7f-47a3-ac91-ab075e6a6034.png)
 
  
  # Restful api
