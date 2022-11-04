@@ -8,9 +8,8 @@
  Sovellus myös muuttaa taustakuvaa sään mukaan. 
  
  # Screenshots
+![sääss](https://user-images.githubusercontent.com/62377839/199988365-ceb7a01f-3ba9-4282-a375-f6a81e0251da.png)
 
-
-![sääss](https://user-images.githubusercontent.com/62377839/199988228-66e42810-a881-4be3-9aa0-fe5c3d702130.png)
 
  
  # Restful api
