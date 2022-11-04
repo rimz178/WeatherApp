@@ -303,7 +303,7 @@ class MainActivity : AppCompatActivity() {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
                 binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.clears
+                    this@MainActivity, R.drawable.sunny12
                 )
 
             }
@@ -325,10 +325,8 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun gettData(body: WeatherModel?) {
-    /*    binding.mainContent.visibility = VISIBLE
-        binding.pbLoading.visibility = View.GONE
-*/
-        binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
+
+      binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
         binding.city.text = body.name
         binding.country.text = body.sys.country
         binding.feelsLike.text = kelvinToCelsius(body.main.feelsLike).toString() +"°C"
@@ -352,7 +350,7 @@ class MainActivity : AppCompatActivity() {
 
 
 private fun getTime(timestamp1 : Long): String? {
-        val times= SimpleDateFormat("k:mm", Locale.ENGLISH)
+        val times= SimpleDateFormat("k:mm", Locale.getDefault())
         val date = Date( timestamp1* 1000)
         return times.format(date)
     }

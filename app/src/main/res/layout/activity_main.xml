@@ -61,8 +61,7 @@
                         android:inputType="text"
                         android:lines="1"
                         android:minHeight="48dp"
-                        android:padding="5dp"
-                        android:textColor="#FFFFFF" />
+                        android:padding="5dp" />
 
 
                 </LinearLayout>
@@ -73,13 +72,13 @@
                 android:id="@+id/overviewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                 android:layout_marginTop="150dp"
                 android:orientation="vertical">
 
 
                 <ImageView
                     android:id="@+id/img_weather_icon"
-                    android:layout_width="89dp"
+                    android:layout_width="100dp"
                     android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_launcher_foreground"
@@ -90,7 +89,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/info_weather" />
+                    android:text="@string/info_weather"
+
+                    />
 
 
                 <TextView
@@ -160,7 +161,9 @@
                             android:layout_height="25dp"
                             android:contentDescription="@string/feels_like_des"
                             android:src="@drawable/temperature"
-                            app:tint="#FFF">
+                            app:tint="#FFF"
+                            >
+
 
                         </ImageView>
 
@@ -169,7 +172,6 @@
                             android:layout_height="5dp" />
 
                         <TextView
-
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feels_like"
