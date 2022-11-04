@@ -3,8 +3,8 @@
 # Authors
 @rimz178/ Riku Mikkonen
 
-# Title 
-Sää Sovellus
+
+# Sää Sovellus
 
 # Topic
  Sovellus kysyy käyttäjältä ensimmäisellä kerralla käyttäjän sijaintia ja näyttää kyseisen paikan sään. 
