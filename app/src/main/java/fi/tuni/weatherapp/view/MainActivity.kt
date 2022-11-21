@@ -1,75 +1,68 @@
 package fi.tuni.weatherapp.view
 
+
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.drawable.AnimationDrawable
-import android.icu.text.DecimalFormat
 import android.icu.text.SimpleDateFormat
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Switch
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import fi.tuni.weatherapp.BuildConfig
 import fi.tuni.weatherapp.BuildConfig.API_KEY
 import fi.tuni.weatherapp.R
 import fi.tuni.weatherapp.databinding.ActivityMainBinding
+import fi.tuni.weatherapp.locale.MyContext
 import fi.tuni.weatherapp.model.WeatherModel
 import fi.tuni.weatherapp.service.WeatherApiService
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Error
 import java.math.RoundingMode
-import java.time.Instant
-import java.time.ZoneId
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
 
-    private  lateinit var  fused : FusedLocationProviderClient
-    private lateinit var  binding: ActivityMainBinding
+    private lateinit var fused: FusedLocationProviderClient
+    private lateinit var binding: ActivityMainBinding
 
-
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         supportActionBar?.hide()
         fused = LocationServices.getFusedLocationProviderClient(this)
         binding.mainContent.visibility = View.GONE
 
-
+        setSupportActionBar(toolbar)
+        getSupportActionBar()?.setDisplayShowTitleEnabled(false);
 
         getLocation()
+
+
 
         // takes the city the user is looking for and converts it to a string
         binding.edtCityName.setOnEditorActionListener { _, id, _ ->
@@ -77,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 getCity(binding.edtCityName.text.toString())
                 val views = this.currentFocus
 
-                if (views != null ) {
+                if (views != null) {
                     val ss: InputMethodManager =
                         getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     ss.hideSoftInputFromWindow(views.windowToken, 0)
@@ -89,6 +82,29 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    override fun attachBaseContext(newBase: Context?) {
+       val myPreference = MyPreference(newBase!!)
+        val lang = myPreference.getLoginCount()
+        super.attachBaseContext(lang?.let { MyContext.wrap(newBase, it) })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var itemview = item.itemId
+
+        when(itemview) {
+           R.id.setting->{
+                   val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+           }
+        }
+        return  super.onOptionsItemSelected(item)
+    }
+
     //Takes the city name given by the user and checks if the city is correct
     private fun getCity(cityName: String) {
         binding.pbLoading.visibility= VISIBLE
@@ -147,7 +163,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         else
                         {
-                            Toast.makeText(this, "Get success", Toast.LENGTH_SHORT).show()
+
                             fetchCurrentLocationWeather(
                                 location.latitude.toString(),
                                 location.longitude.toString()
@@ -326,11 +342,10 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun gettData(body: WeatherModel?) {
 
-      binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
+        binding.temp.text = kelvinToCelsius( body!!.main.temp).toString() + "°C"
         binding.city.text = body.name
         binding.country.text = body.sys.country
         binding.feelsLike.text = kelvinToCelsius(body.main.feelsLike).toString() +"°C"
-        binding.infoWeather.text = body.weather[0].description
         binding.sunrise.text = getTime(body.sys.sunrise.toLong())
         binding.sunset.text = getTime(body.sys.sunset.toLong())
         binding.pressure.text = body.main.pressure.toString() + " hPa"
@@ -346,7 +361,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
 
 
 

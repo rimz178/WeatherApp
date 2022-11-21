@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WeatherApp</string>
 
@@ -36,19 +37,11 @@
     <string name="reply_title" />
     <string name="signature_title" />
     <string name="title_activity_main">MainActivity</string>
-    <string name="Finland">Finland</string>
-    <string name="English">English</string>
+    <string name="Finland" >Finland</string>
+    <string name="English" >English</string>
     <string name="language_menu">Language menu</string>
-    <string name="Language"> Language</string>
+    <string name="Language"  > Language</string>
     <string name="Choose_language">Choose language</string>
-    <!-- Strings used for fragments for navigation -->
-
-
-
-
-    <!-- Preference Titles -->
-
-    <!-- TODO: Remove or change this placeholder text -->
 
 
 </resources>

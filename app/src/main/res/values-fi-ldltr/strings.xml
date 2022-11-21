@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeatherApp</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="city_name">Kaupungin nimi</string>
+    <string name="info_weather">Säätiedot</string>
+    <string name="_24_c">24°C</string>
+    <string name="country">Maa</string>
+    <string name="feels_like">Tuntuu kuin</string>
+    <string name="_5_30">5:30</string>
+    <string name="sunrise">Auringon nousu</string>
+    <string name="sunset">Auringon Lasku</string>
+    <string name="wind">Tuuli</string>
+    <string name="_5_30am">5:30am</string>
+    <string name="todo">TODO</string>
+    <string name="pressure">Ilmanpaine</string>
+    <string name="hpa">hpa</string>
+    <string name="humidity">Ilmankosteus</string>
+    <string name="_12">12</string>
+    <string name="feels_like_des">tuntuu kuin</string>
+    <string name="search_locations">Etsi kaupunki</string>
+    <string name="settings"> Asetukset</string>
+
+
+    <string name="title_activity_settings">Asetukset</string>
+    <string name="messages_header">Viestit</string>
+    <string name="ui" translatable="false">UI</string>
+    <string name="dark_mode">Tumma tila</string>
+    <string name="dark_mode_def_value">1</string>
+    <string name="sync_header" />
+    <string name="sync_title" />
+    <string name="attachment_summary_off" />
+    <string name="attachment_summary_on" />
+    <string name="attachment_title" />
+    <string name="reply_title" />
+    <string name="signature_title" />
+    <string name="title_activity_main">MainActivity</string>
+    <string name="Finland" > Suomi</string>
+    <string name="English">Englanti</string>
+    <string name="language_menu">Valitse kieli</string>
+    <string name="Language" >Kielet</string>
+    <string name="Choose_language">Valitse kieli</string>
+</resources>
