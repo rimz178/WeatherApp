@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#323232"
-
         >
 
 
@@ -104,6 +103,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif-thin"
                     android:text="@string/_24_c"
+                    android:textColor="@color/black"
                     android:textSize="80sp">
 
                 </TextView>
@@ -119,6 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/city_name"
+                        android:textColor="@color/black"
                         android:textSize="20sp" />
 
                     <Space
@@ -132,17 +133,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/country"
+                        android:textColor="@color/black"
                         android:textSize="20sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
+
                 android:id="@+id/detailsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"
+
                 android:padding="5dp">
 
                 <LinearLayout
@@ -178,7 +182,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/feels_like"
-                            android:textSize="12sp">
+                            android:textSize="12sp"
+                            android:textColor="@color/black">
 
                         </TextView>
 
@@ -187,7 +192,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/_5_30"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textColor="@color/black"/>
 
 
                     </LinearLayout>
@@ -222,6 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/sunrise"
+                            android:textColor="@color/black"
                             android:textSize="12sp">
 
                         </TextView>
@@ -231,6 +238,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/_5_30"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 
@@ -266,6 +274,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/sunset"
+                            android:textColor="@color/black"
                             android:textSize="12sp">
 
                         </TextView>
@@ -275,6 +284,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/_5_30"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 
@@ -320,6 +330,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/wind"
+                            android:textColor="@color/black"
                             android:textSize="12sp">
 
                         </TextView>
@@ -329,6 +340,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/_5_30am"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 
@@ -364,6 +376,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pressure"
+                            android:textColor="@color/black"
                             android:textSize="12sp">
 
                         </TextView>
@@ -373,6 +386,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/hpa"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 
@@ -407,6 +421,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/humidity"
+                            android:textColor="@color/black"
                             android:textSize="12sp">
 
                         </TextView>
@@ -416,6 +431,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/_12"
+                            android:textColor="@color/black"
                             android:textSize="14sp" />
 
 

@@ -13,6 +13,8 @@ object WeatherApiService {
 
     private var retrofit:Retrofit?=null
     private var BASE_URL="https://api.openweathermap.org/data/2.5/"
+
+
     fun getWeatherApi():WeatherApi? {
         if(retrofit==null) {
             retrofit=Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()

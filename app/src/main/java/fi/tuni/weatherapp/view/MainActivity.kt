@@ -3,7 +3,6 @@ package fi.tuni.weatherapp.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -16,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
+import android.view.View.generateViewId
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -31,9 +31,11 @@ import com.google.android.gms.location.LocationServices
 import fi.tuni.weatherapp.BuildConfig.API_KEY
 import fi.tuni.weatherapp.R
 import fi.tuni.weatherapp.databinding.ActivityMainBinding
-import fi.tuni.weatherapp.locale.MyContext
+import fi.tuni.weatherapp.locale.Context
 import fi.tuni.weatherapp.model.WeatherModel
 import fi.tuni.weatherapp.service.WeatherApiService
+import fi.tuni.weatherapp.settings.MyPreference
+import fi.tuni.weatherapp.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,11 +60,11 @@ class MainActivity : AppCompatActivity() {
         binding.mainContent.visibility = View.GONE
 
         setSupportActionBar(toolbar)
+
+        // Hides the toolbar
         getSupportActionBar()?.setDisplayShowTitleEnabled(false);
 
         getLocation()
-
-
 
         // takes the city the user is looking for and converts it to a string
         binding.edtCityName.setOnEditorActionListener { _, id, _ ->
@@ -82,23 +84,25 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    override fun attachBaseContext(newBase: Context?) {
+    // Translates the language of the page according to the language selected by the user in the settings menu
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
        val myPreference = MyPreference(newBase!!)
         val lang = myPreference.getLoginCount()
-        super.attachBaseContext(lang?.let { MyContext.wrap(newBase, it) })
+        super.attachBaseContext(lang?.let { Context.wrap(newBase, it) })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
+    //When the user selects settings from the toolbox, this opens the settings activity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var itemview = item.itemId
 
         when(itemview) {
            R.id.setting->{
-                   val intent = Intent(this, SettingsActivity::class.java)
+               val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
            }
         }
@@ -123,7 +127,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
-
             override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
                 Toast.makeText(applicationContext, "on Failure", Toast.LENGTH_SHORT).show()
             }
@@ -137,9 +140,9 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission","SetTextI18n")
     private  fun getLocation() {
 
-        if(checkPermission())
+       if(checkPermission())
         {
-            if(ActivityCompat.checkSelfPermission(
+           if(ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
             )!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -163,14 +166,11 @@ class MainActivity : AppCompatActivity() {
                         }
                         else
                         {
-
                             fetchCurrentLocationWeather(
                                 location.latitude.toString(),
                                 location.longitude.toString()
 
                             )
-
-
 
                         }
                     }
@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.pbLoading.visibility = VISIBLE
 
-        WeatherApiService.getWeatherApi()?.getCurrentWeatherData(latitude, longitude, API_KEY  )//API_KEY
+        WeatherApiService.getWeatherApi()?.getCurrentWeatherData(latitude, longitude, API_KEY  )
             ?.enqueue(object :
                 Callback<WeatherModel> {
                 @RequiresApi(Build.VERSION_CODES.O)
@@ -271,71 +271,92 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-    } //change the background according to the weather
+    }
+
+    //change the background according to the weather
      private fun update (id : Int)  {
-        when(id) {
-            //thunderstorm
-            in 200..232-> {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.thunderstorm_2
-                )
+        var c = Calendar.getInstance()
+        var timeOfDay = c[Calendar.HOUR_OF_DAY]
 
-            }
+        if (timeOfDay >= 18 && timeOfDay < 6.00)  {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-            //rain
-            in 300..531 ->{
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            binding.mainContent.background = ContextCompat.getDrawable(
+                this@MainActivity, R.drawable.night3)
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.raindrop
-                )
+        }
+        else {
+            when(id) {
 
-            } // snow
-            in 600..622 ->{
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                //thunderstorm
+                in 200..232-> {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.snows
-                )
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.thunderstorm_2
+                    )
 
-            }//mist
-           in 700..781 ->{
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                }
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.mists
-                )
+                //rain
+                in 300..531 ->{
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-            }
-            //clear
-             800 ->{
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.raindrop
+                    )
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.sunny12
-                )
+                } // snow
+                in 600..622 ->{
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-            }
-            //clouds
-            in 801..804 ->{
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.snows
+                    )
 
-                binding.mainContent.background = ContextCompat.getDrawable(
-                    this@MainActivity, R.drawable.clodss
-                )
+                }//mist
+                in 700..781 ->{
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.mists
+                    )
+
+                }
+                //clear
+                800 ->{
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.sunny12
+
+                    )
+
+                }
+
+                //clouds
+                in 801..804 ->{
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+                    binding.mainContent.background = ContextCompat.getDrawable(
+                        this@MainActivity, R.drawable.clodss
+                    )
+
+                }
             }
         }
+
          binding.mainContent.visibility = VISIBLE
          binding.pbLoading.visibility = View.GONE
+
        }
 
     @SuppressLint("SetTextI18n")
@@ -354,6 +375,7 @@ class MainActivity : AppCompatActivity() {
         binding.humidity.text = body.main.humidity.toString() + " %"
 
         update(body.weather[0].id)
+
         Glide.with(this)
             .load("http://openweathermap.org/img/wn/" + body.weather[0].icon + "@2x.png")
             .into(img_weather_icon)
@@ -363,19 +385,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-private fun getTime(timestamp1 : Long): String? {
+ // change the number code of the clock to the correct one
+    private fun getTime(timestamp1 : Long): String? {
         val times= SimpleDateFormat("k:mm", Locale.getDefault())
         val date = Date( timestamp1* 1000)
         return times.format(date)
     }
-
     private fun kelvinToCelsius(temp: Double): Int {
         var intTemp = temp
         intTemp = intTemp.minus(273)
         return intTemp.toBigDecimal().setScale(0, RoundingMode.UP).toInt()
 }
-
-
-
-
