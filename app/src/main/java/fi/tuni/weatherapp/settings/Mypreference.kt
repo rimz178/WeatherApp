@@ -13,9 +13,9 @@ class MyPreference(context : Context){
 
     // this function sets the default language when you open the application for the first time
     fun getLoginCount() : String? {
-        return preference.getString(PREFERENCE_LANGUAGE,"en")
+        return preference.getString(PREFERENCE_LANGUAGE,"fi")
     }
-  //
+
     fun setLoginCount(Language:String){
         val editor = preference.edit()
         editor.putString(PREFERENCE_LANGUAGE,Language)

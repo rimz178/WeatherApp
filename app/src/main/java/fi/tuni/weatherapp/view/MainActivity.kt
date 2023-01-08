@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
 
     }
     // Translates the language of the page according to the language selected by the user in the settings menu
-
     override fun attachBaseContext(newBase: android.content.Context?) {
        val myPreference = MyPreference(newBase!!)
         val lang = myPreference.getLoginCount()
@@ -96,6 +95,8 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
+
     //When the user selects settings from the toolbox, this opens the settings activity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var itemview = item.itemId
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
 
    /*Check if the app has permission to use the device's location,
-       if the location is not turned on, the device asks for permission to use the location */
+    if the location is not turned on, the device asks for permission to use the location */
     @SuppressLint("MissingPermission","SetTextI18n")
     private  fun getLocation() {
 
@@ -158,7 +159,6 @@ class MainActivity : AppCompatActivity() {
             {
                     fused.lastLocation.addOnCompleteListener(this) {task ->
                         val location: Location? =task.result
-
                         if(location==null) {
 
                             Toast.makeText(this, "null Received", Toast.LENGTH_SHORT).show()
@@ -275,32 +275,16 @@ class MainActivity : AppCompatActivity() {
 
     //change the background according to the weather
      private fun update (id : Int)  {
+        when(id) {
+            //thunderstorm
+            in 200..232-> {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
-        var c = Calendar.getInstance()
-        var timeOfDay = c[Calendar.HOUR_OF_DAY]
-
-        if (timeOfDay >= 18 && timeOfDay < 6.00)  {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-            binding.mainContent.background = ContextCompat.getDrawable(
-                this@MainActivity, R.drawable.night3)
-
-        }
-        else {
-            when(id) {
-
-                //thunderstorm
-                in 200..232-> {
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-                    binding.mainContent.background = ContextCompat.getDrawable(
-                        this@MainActivity, R.drawable.thunderstorm_2
+                binding.mainContent.background = ContextCompat.getDrawable(
+                    this@MainActivity, R.drawable.thunderstorm_2
                     )
-
                 }
-
                 //rain
                 in 300..531 ->{
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -352,7 +336,6 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-        }
 
          binding.mainContent.visibility = VISIBLE
          binding.pbLoading.visibility = View.GONE
@@ -383,7 +366,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
 
  // change the number code of the clock to the correct one
     private fun getTime(timestamp1 : Long): String? {
