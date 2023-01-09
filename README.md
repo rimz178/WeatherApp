@@ -10,7 +10,8 @@ Sovelluksessa voi vaihtaa kieltä Englannin ja Suomen kielen välillä.
 
  
  # Screenshots
-![sääss](https://user-images.githubusercontent.com/62377839/199988365-ceb7a01f-3ba9-4282-a375-f6a81e0251da.png)
+![lontoo400_711](https://user-images.githubusercontent.com/62377839/211311420-38581dfa-16ae-4e0f-83b7-409af042331c.png)
+
 
 
  
